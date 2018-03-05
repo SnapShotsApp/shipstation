@@ -1,10 +1,9 @@
 module Shipstation
   class Carrier < ApiResource
     class << self
-        def list
-          response = Shipstation.request(:get, 'carriers')
-          response
-        end
+      def list
+        Shipstation.request(:get, 'carriers')
+      end
     end
   end
 end

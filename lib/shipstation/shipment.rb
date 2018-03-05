@@ -1,5 +1,5 @@
 module Shipstation
   class Shipment < ApiResource
-    extend Shipstation::APIOperations::List
+    extend Shipstation::Api::List
   end
 end

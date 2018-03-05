@@ -1,15 +1,12 @@
 module Shipstation
   class Warehouse < ApiResource
-    extend Shipstation::APIOperations::Create
-    extend Shipstation::APIOperations::Retrieve
-    extend Shipstation::APIOperations::Update
-
+    extend Shipstation::Api::Create
+    extend Shipstation::Api::Retrieve
+    extend Shipstation::Api::Update
     class << self
-        def list
-          response = Shipstation.request(:get, 'warehouses')
-
-          response
-        end
+      def list
+        Shipstation.request(:get, 'warehouses')
+      end
     end
   end
 end

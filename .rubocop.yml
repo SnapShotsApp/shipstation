@@ -1,0 +1,21 @@
+Documentation:
+  Enabled: false
+
+Style/ClassAndModuleChildren:
+  EnforcedStyle: compact
+
+Style/EmptyMethod:
+  EnforcedStyle: compact
+
+Style/StringLiterals:
+  EnforcedStyle: single_quotes
+  ConsistentQuotesInMultiline: false
+
+Metrics/LineLength:
+  Max: 130
+
+Layout/EmptyLinesAroundBlockBody:
+  EnforcedStyle: no_empty_lines
+
+Layout/EmptyLinesAroundClassBody:
+  EnforcedStyle: no_empty_lines

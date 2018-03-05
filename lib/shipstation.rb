@@ -1,10 +1,7 @@
+require 'active_support/all'
 require 'rest-client'
 
-require 'shipstation/api_operations/list'
-require 'shipstation/api_operations/create'
-require 'shipstation/api_operations/retrieve'
-require 'shipstation/api_operations/update'
-
+require 'shipstation/api'
 require 'shipstation/api_resource'
 require 'shipstation/order'
 require 'shipstation/customer'

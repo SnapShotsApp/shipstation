@@ -1,21 +1,38 @@
-$LOAD_PATH.push File.expand_path('../lib', __FILE__)
 
-# Maintain your gem's version:
+lib = File.expand_path('../lib', __FILE__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'shipstation/version'
 
-# Describe your gem and declare its dependencies:
-Gem::Specification.new do |s|
-  s.name        = 'shipstation'
-  s.version     = Shipstation::VERSION
-  s.authors     = ['Tom Dallimore']
-  s.email       = ['me@tomdallimore.com']
-  s.homepage    = 'https://github.com/Jellyfishboy/shipstation'
-  s.summary     = 'A Ruby wrapper for the Shipstation API'
-  s.description = 'A Ruby wrapper for the Shipstation API'
-  s.license     = 'MIT'
+Gem::Specification.new do |spec|
+  spec.name          = 'shipstation'
+  spec.version       = Shipstation::VERSION
+  spec.authors       = ['Tom Dallimore']
+  spec.email         = ['me@tomdallimore.com']
+  spec.homepage      = 'https://github.com/Jellyfishboy/shipstation'
+  spec.summary       = 'A Ruby wrapper for the Shipstation API'
+  spec.description   = 'A Ruby wrapper for the Shipstation API'
+  spec.license       = 'MIT'
 
-  s.files = Dir['{app,config,db,lib}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.rdoc']
-  s.test_files = Dir['test/**/*']
+  # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
+  # to allow pushing to a single host or delete this section to allow pushing to any host.
+  if spec.respond_to?(:metadata)
+    spec.metadata['allowed_push_host'] = "TODO: Set to 'http://mygemserver.com'"
+  else
+    raise 'RubyGems 2.0 or newer is required to protect against ' \
+      'public gem pushes.'
+  end
 
-  s.add_dependency 'rest-client', '~> 2'
+  spec.files = `git ls-files -z`.split("\x0").reject do |f|
+    f.match(%r{^(test|spec|features)/})
+  end
+  spec.bindir        = 'exe'
+  spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
+  spec.require_paths = ['lib']
+
+  spec.add_development_dependency 'bundler', '~> 1.16'
+  spec.add_development_dependency 'rake', '~> 10.0'
+  spec.add_development_dependency 'rspec', '~> 3.0'
+  spec.add_development_dependency 'webmock', '~> 3.3'
+  spec.add_dependency 'activesupport', '~> 5.1.5'
+  spec.add_dependency 'rest-client', '~> 2'
 end

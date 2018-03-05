@@ -1,14 +1,11 @@
 module Shipstation
   class Store < ApiResource
-    extend Shipstation::APIOperations::Retrieve
-    extend Shipstation::APIOperations::Update
-
+    extend Shipstation::Api::Retrieve
+    extend Shipstation::Api::Update
     class << self
-        def list
-          response = Shipstation.request(:get, 'stores')
-
-          response
-        end
+      def list
+        Shipstation.request(:get, 'stores')
+      end
     end
   end
 end
