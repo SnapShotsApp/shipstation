@@ -1,12 +1,11 @@
 module Shipstation
-    class Tag < ApiResource
+  class Tag < ApiResource
+    class << self
+        def list
+          response = Shipstation.request(:get, 'accounts/listtags')
 
-        class << self
-            def list
-                response = Shipstation.request(:get, 'accounts/listtags')
-                
-                return response
-            end
+          response
         end
     end
+  end
 end

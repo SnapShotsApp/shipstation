@@ -10,6 +10,6 @@ gemspec
 # Git. Remember to move these dependencies to your gemspec before releasing
 # your gem to rubygems.org.
 
+gem 'webmock', group: :test
 # To use a debugger
 # gem 'byebug', group: [:development, :test]
-
