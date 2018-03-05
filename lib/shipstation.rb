@@ -1,75 +1,44 @@
 require 'active_support/all'
 require 'rest-client'
 
-require 'shipstation/api'
-require 'shipstation/api_resource'
-require 'shipstation/order'
-require 'shipstation/customer'
-require 'shipstation/shipment'
-require 'shipstation/carrier'
-require 'shipstation/store'
-require 'shipstation/warehouse'
-require 'shipstation/product'
-require 'shipstation/tag'
+require 'shipstation/params_helper'
+require 'shipstation/endpoints'
+require 'shipstation/request'
 
 module Shipstation
-  API_BASE = 'https://ssapi.shipstation.com/'.freeze
+  class Client
+    include Shipstation::ParamsHelper
+    include Shipstation::Request
+    include Shipstation::Endpoints
 
-  class ShipstationError < StandardError
-  end
+    class ShipstationError < StandardError; end
+    class AuthenticationError < ShipstationError; end
+    class ConfigurationError < ShipstationError; end
 
-  class AuthenticationError < ShipstationError; end
-  class ConfigurationError < ShipstationError; end
+    def self.instance
+      @@instance ||= new
+    end
 
-  class << self
-      def username
-        defined? @username && @username || raise(
-          ConfigurationError, 'Shipstation username not configured'
-        )
-      end
-      attr_writer :username
+    attr_writer :username
+    attr_writer :password
 
-      def password
-        defined? @password && @password || raise(
-          ConfigurationError, 'Shipstation password not configured'
-        )
-      end
-      attr_writer :password
+    def initialize(username = nil, password = nil)
+      @username = username
+      @password = password
+    end
 
-      def request(method, resource, params = {})
-        ss_username = params[:username] || Shipstation.username
-        ss_password = params[:password] || Shipstation.password
+    def username
+      raise raise(ConfigurationError, 'Shipstation username not configured') unless @username.present?
+      @username
+    end
 
-        params.except!(:username, :password)
+    def password
+      raise raise(ConfigurationError, 'Shipstation password not configured') unless @password.present?
+      @password
+    end
 
-        defined? method || raise(
-          ArgumentError, 'Request method has not been specified'
-        )
-        defined? resource || raise(
-          ArgumentError, 'Request resource has not been specified'
-        )
-        if method == :get
-          headers = { accept: :json, content_type: :json }.merge(params: params)
-          payload = nil
-        else
-          headers = { accept: :json, content_type: :json }
-          payload = params
-        end
-        RestClient::Request.new(
-          method: method,
-          url: API_BASE + resource,
-          user: ss_username,
-          password: ss_password,
-          payload: payload ? payload.to_json : nil,
-          headers: headers
-        ).execute do |response, _request, _result|
-          str_response = response.to_str
-          str_response.blank? ? '' : JSON.parse(str_response)
-        end
-      end
-
-      def datetime_format(datetime)
-        datetime.strftime('%Y-%m-%d %T')
-      end
+    def auth
+      { username: username, password: password }
+    end
   end
 end
